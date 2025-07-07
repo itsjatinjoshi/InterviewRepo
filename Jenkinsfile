@@ -7,11 +7,14 @@ pipeline{
                 //deleteDir()
             }
         }
-    }
-    stages{
         stage("Clone the repo"){
             steps{
             sh "git clone https://github.com/itsjatinjoshi/InterviewRepo.git"
+            }
+        }
+        stage("Execute the file.py file"){
+            steps{
+            sh "python3 file.py"
             }
         }
     }
