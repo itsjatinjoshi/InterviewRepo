@@ -10,6 +10,9 @@ pipeline{
             steps{
                 REM Activate Python virtual environment and run file.py
                 git config --global --add safe.directory C:/Project/InterviewRepo
+                cd C:/Project/InterviewRepo
+                git pull
+                
                 cd /d C:\Project\InterviewRepo\venv\Scripts
                 call activate
 
