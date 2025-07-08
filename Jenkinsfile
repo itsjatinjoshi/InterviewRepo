@@ -1,5 +1,5 @@
 pipeline{
-    agent any{
+    agent any
     stages{
         stage("Clean up"){
             steps{
@@ -14,9 +14,15 @@ pipeline{
         }
         stage("Execute the file.py file"){
             steps{
-                sh "python file.py"
+            @echo off
+            REM Activate Python virtual environment and run file.py
+
+            cd /d C:\Project\InterviewRepo\venv\Scripts
+            call activate
+
+            cd /d C:\Project\InterviewRepo
+            python file.py
             }
         }
-    }
     }
 }
