@@ -10,31 +10,30 @@ pipeline {
                         git clone https://github.com/your-username/InterviewRepo.git
                     ) else (
                         cd InterviewRepo
+                        git config --global --add safe.directory C:/Project/InterviewRepo
                         git pull
                     )
                 '''
             }
         }
-
         stage('Create virtual environment') {
             steps {
                 bat '''
-                cd /d %PROJECT%
+                cd C:\\Project\\InterviewRepo
                 if not exist venv (
-                    python -m venv venv
+                    "%PYTHON%" -m venv venv
                 )
                 '''
             }
         }
-
         stage('Install dependencies') {
             steps {
                 bat '''
-                cd /d %PROJECT%\\venv\\Scripts
-                call activate
+                cd C:\\Project\\InterviewRepo
+                call venv\\Scripts\\activate.bat
 
-                cd /d %PROJECT%
-                python file.py
+                cd C:\\Project\\InterviewRepo
+                "%PYTHON%" file.py
                 '''
             }
         }
