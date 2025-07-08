@@ -2,38 +2,29 @@ pipeline {
     agent any
 
     stages {
-        stage('Trust Git Directory') {
-            steps {
-                bat 'git clone https://github.com/itsjatinjoshi/InterviewRepo.git'
-            }
-        }
-
-         stage("Execute the file.py file") {
+        stage('Clone to custom directory') {
             steps {
                 bat '''
-                REM Mark repo as safe to prevent Git security warning
-                git config --global --add safe.directory C:/Project/InterviewRepo
-
-                REM Change to script directory and pull latest changes
-                cd /d C:\\Project\\InterviewRepo
-                git pull
-
-                REM Activate virtual environment
-                call venv\\Scripts\\activate
-
-                REM Run Python script
-                python file.py
+                if not exist C:\\Project\\InterviewRepo (
+                    git clone https://github.com/your-username/InterviewRepo.git C:\\Project\\InterviewRepo
+                ) else (
+                    cd C:\\Project\\InterviewRepo
+                    git pull
+                )
                 '''
             }
         }
-    }
 
-    post {
-        failure {
-            echo '❌ Script or Git operation failed.'
-        }
-        success {
-            echo '✅ Successfully ran the Python script.'
+        stage('Run script using existing venv') {
+            steps {
+                bat '''
+                cd /d C:\\Project\\InterviewRepo\\venv\\Scripts
+                call activate
+
+                cd /d C:\\Project\\InterviewRepo
+                python file.py
+                '''
+            }
         }
     }
 }
