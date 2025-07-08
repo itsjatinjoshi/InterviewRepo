@@ -4,16 +4,13 @@ pipeline {
         stage("Clone the repo") {
             steps {
                 // If Jenkins is already set to clone from SCM, this is optional
-                bat 'git clone https://github.com/itsjatinjoshi/InterviewRepo.git'
+                bat 'git config --global --add safe.directory C:/Project/InterviewRepo'
             }
         }
 
         stage("Execute the file.py file") {
             steps {
                 bat '''
-                REM Mark repo as safe to prevent Git security warning
-                git config --global --add safe.directory C:/Project/InterviewRepo
-
                 REM Change to script directory and pull latest changes
                 cd /d C:\\Project\\InterviewRepo
                 git pull
