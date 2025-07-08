@@ -1,24 +1,17 @@
 pipeline {
     agent any
+
     stages {
-        stage("Clone the repo") {
+        stage('Trust Git Directory') {
             steps {
-                // If Jenkins is already set to clone from SCM, this is optional
-                bat 'git config --global --add safe.directory C:/Project/InterviewRepo'
+                bat 'git config --system --add safe.directory "C:/Project/InterviewRepo"'
             }
         }
 
-        stage("Execute the file.py file") {
+        stage('Run Python Script') {
             steps {
                 bat '''
-                REM Change to script directory and pull latest changes
                 cd /d C:\\Project\\InterviewRepo
-                git pull
-
-                REM Activate virtual environment
-                call venv\\Scripts\\activate
-
-                REM Run Python script
                 python file.py
                 '''
             }
@@ -27,10 +20,7 @@ pipeline {
 
     post {
         failure {
-            echo '❌ Script or Git operation failed.'
-        }
-        success {
-            echo '✅ Successfully ran the Python script.'
+            echo '❌ Something went wrong. Check the logs.'
         }
     }
 }
