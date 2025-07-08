@@ -4,7 +4,7 @@ pipeline {
         stage("Clone the repo") {
             steps {
                 // If Jenkins is already set to clone from SCM, this is optional
-                bat 'git config --global --add safe.directory C:/Project/InterviewRepo'
+                bat 'git config --global --add safe.directory "*"'
             }
         }
 
