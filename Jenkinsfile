@@ -5,8 +5,13 @@ pipeline {
         stage('Clone to custom directory') {
             steps {
                 bat '''
-                cd  C:\\Project
-                git clone https://github.com/your-username/InterviewRepo.git
+                    cd C:\\Project
+                    if not exist InterviewRepo (
+                        git clone https://github.com/your-username/InterviewRepo.git
+                    ) else (
+                        cd InterviewRepo
+                        git pull
+                    )
                 '''
             }
         }
@@ -14,7 +19,7 @@ pipeline {
         stage('Create virtual environment') {
             steps {
                 bat '''
-                cd /d %WORKSPACE%
+                cd /d %PROJECT%
                 if not exist venv (
                     python -m venv venv
                 )
@@ -25,10 +30,10 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 bat '''
-                cd /d %WORKSPACE%\\venv\\Scripts
+                cd /d %PROJECT%\\venv\\Scripts
                 call activate
 
-                cd /d %WORKSPACE%
+                cd /d %PROJECT%
                 python file.py
                 '''
             }
