@@ -11,13 +11,24 @@ pipeline {
             }
         }
 
-        stage('Run script using existing venv') {
+        stage('Create virtual environment') {
             steps {
                 bat '''
-                cd /d C:\\Project\\InterviewRepo\\venv\\Scripts
+                cd /d %WORKSPACE%
+                if not exist venv (
+                    python -m venv venv
+                )
+                '''
+            }
+        }
+
+        stage('Install dependencies') {
+            steps {
+                bat '''
+                cd /d %WORKSPACE%\\venv\\Scripts
                 call activate
 
-                cd /d C:\\Project\\InterviewRepo
+                cd /d %WORKSPACE%
                 python file.py
                 '''
             }
