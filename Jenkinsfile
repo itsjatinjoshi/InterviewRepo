@@ -5,7 +5,6 @@ pipeline {
         stage('Trust Git Directory') {
             steps {
                 bat 'git clone https://github.com/itsjatinjoshi/InterviewRepo.git'
-                call 'git config --system --add safe.directory "C:/Project/InterviewRepo"'
             }
         }
 
