@@ -5,12 +5,7 @@ pipeline {
         stage('Clone to custom directory') {
             steps {
                 bat '''
-                if not exist C:\\Project\\InterviewRepo (
-                    git clone https://github.com/your-username/InterviewRepo.git C:\\Project\\InterviewRepo
-                ) else (
-                    cd C:\\Project\\InterviewRepo
-                    git pull
-                )
+                git clone https://github.com/your-username/InterviewRepo.git
                 '''
             }
         }
