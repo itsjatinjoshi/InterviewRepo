@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent any {
+        customWorkspace 'C:\\Project'
+    }
 
     stages {
         stage('Clone to custom directory') {
@@ -26,15 +28,29 @@ pipeline {
                 '''
             }
         }
-        stage('Install dependencies') {
+        stage('Activate Virtual Environment') {
             steps {
                 bat '''
                 cd C:\\Project\\InterviewRepo
                 call venv\\Scripts\\activate.bat
-
-                cd C:\\Project\\InterviewRepo
-                "%PYTHON%" file.py
                 '''
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Install necessary Python packages
+                    bat "pip install -r requirements.txt"
+                }
+            }
+        }
+        stage('Run Python File') {
+            steps {
+                script {
+                    cd C:\\Project\\InterviewRepo
+                    "%PYTHON%" file.py
+                }
             }
         }
     }
