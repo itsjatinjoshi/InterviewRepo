@@ -1,5 +1,5 @@
 pipeline {
-    agent {
+    agent any {
         // Set custom workspace location
         customWorkspace 'C:\\Project'
     }
