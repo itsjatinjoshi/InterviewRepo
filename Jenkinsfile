@@ -48,8 +48,10 @@ pipeline {
         stage('Run Python File') {
             steps {
                 script {
-                    cd C:\\Project\\InterviewRepo
-                    "%PYTHON%" file.py
+                    bat '''
+                        cd C:\\Project\\InterviewRepo
+                        "%PYTHON%" file.py
+                    '''
                 }
             }
         }
