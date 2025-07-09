@@ -39,20 +39,19 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                script {
-                    // Install necessary Python packages
-                    bat "pip install -r requirements.txt"
-                }
+                bat '''
+                // Install necessary Python packages
+                 "pip install -r requirements.txt"
+                '''
             }
         }
         stage('Run Python File') {
             steps {
-                script {
-                    bat '''
-                        cd C:\\Project\\InterviewRepo
-                        "%PYTHON%" file.py
-                    '''
-                }
+                bat '''
+                cd C:\\Project\\InterviewRepo
+                "%PYTHON%" file.py
+                '''
+                
             }
         }
     }
