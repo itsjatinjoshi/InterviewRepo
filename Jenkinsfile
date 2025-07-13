@@ -47,5 +47,14 @@ pipeline {
 
             }
         }
+        stage('Run test file'){
+            steps{
+                bat '''
+                cd C:\\Project\\InterviewRepo
+                call venv\\Scripts\\activate.bat
+                pytest test_csv_cases.py
+                '''
+            }
+        }
     }
 }
