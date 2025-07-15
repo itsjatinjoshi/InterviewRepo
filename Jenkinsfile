@@ -60,9 +60,28 @@ pipeline {
 // check the result of pipeline and send email notification 
 // use Gmail SMTP server for sending email
 // attach the result of python script and pipeline logs to the email
-        stage('Send Email Notification') {
-            steps {
-                echo 'TODO: Add email sending logic here.'
+    stage('Send Email Notification') {
+        steps {
+            script {
+                def reportPath = "${params.targetDir}/sales_report.png"
+    
+                if (fileExists(reportPath)) {
+                    emailext(
+                        subject: "Jenkins Job '${env.JOB_NAME}' Succeeded",
+                        body: """<p>The job <b>${env.JOB_NAME}</b> completed successfully.</p>
+                                 <p>Python script output <code>sales_report.png</code> is attached.</p>""",
+                        to: "your.email@example.com", // Change this
+                        attachmentsPattern: reportPath,
+                        mimeType: 'text/html'
+                    )
+                } else {
+                    emailext(
+                        subject: "Jenkins Job '${env.JOB_NAME}' completed (no report found)",
+                        body: "The job ran, but 'sales_report.png' was not found.",
+                        to: "your.email@example.com",
+                        mimeType: 'text/plain'
+                    )
+                }
             }
         }
     }
