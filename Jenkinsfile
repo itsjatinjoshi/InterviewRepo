@@ -9,6 +9,9 @@ pipeline {
 // Define the parameters for the pipeline here
     parameters {
         string(name: 'repo', defaultValue: '', description: 'GitHub repository URL')
+        string(name: 'branch', defaultValue: '*/master', description: 'Branch name')
+        string(name: 'targetDir', defaultValue: 'C:\\Project', description: 'relativeTargetDir')
+        string(name: 'auth', defaultValue: %GIT_PASS%, description: 'GIT PASSWORD')
     }
 
     stages {
