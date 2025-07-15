@@ -6,63 +6,66 @@
 pipeline {
     agent any
 
-    environment {
-        PYTHON = 'C:\\Python39\\python.exe' // Adjust this path to your Python installation
-    }
-
+// Define the parameters for the pipeline here
     parameters {
         string(name: 'repo', defaultValue: '', description: 'GitHub repository URL')
         string(name: 'branch', defaultValue: '*/master', description: 'Branch name')
-        string(name: 'targetDir', defaultValue: 'C:\\Project\\InterviewRepo', description: 'Target checkout directory')
-        string(name: 'auth', defaultValue: '', description: 'GitHub credentials ID')
+        string(name: 'targetDir', defaultValue: 'InterviewRepo', description: 'relativeTargetDir')
+        string(name: 'auth', defaultValue: '', description: 'Credentials ID for GitHub')
     }
 
     stages {
-
         stage('Clone Repo') {
             steps {
-                script {
-                    bat "git config --global --add safe.directory \"${params.targetDir}\""
-                }
-
                 checkout([
                     $class: 'GitSCM',
                     branches: [[name: params.branch]],
-                    userRemoteConfigs: [[url: params.repo, credentialsId: params.auth]],
+                    doGenerateSubmoduleConfigurations: false,
                     extensions: [
-                        [$class: 'RelativeTargetDirectory', relativeTargetDir: params.targetDir]
-                    ]
+                        [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false, timeout: 6000],
+                        [$class: 'RelativeTargetDirectory', relativeTargetDir: params.targetDir],
+                        [$class: 'CheckoutOption', timeout: 6000],
+                        [$class: 'PruneStaleBranch'],
+                        [$class: 'AuthorInChangelog'],
+                        [$class: 'GitLFSPull']
+                    ],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [[url: params.repo, credentialsId: params.auth]]
                 ])
             }
         }
 
+
+// Run the python script in virtual environment
+// make sure to use requirements.txt to install dependencies
+
         stage('Run Python Script') {
             steps {
                 dir(params.targetDir) {
-                    bat """
-                        ${env.PYTHON} -m venv venv
-                        call venv\\Scripts\\activate.bat
-                        pip install --upgrade pip
-                        pip install -r requirements.txt
-                        python file.py
-                    """
+                    bat '''
+                    "%PYTHON%" -m venv venv
+                    call venv\\Scripts\\activate.bat
+
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
+
+                    "%PYTHON%" file.py
+
+                    echo 'TODO: Implement script execution here.'
+                    '''
                 }
             }
         }
 
+// check the result of pipeline and send email notification 
+// use Gmail SMTP server for sending email
+// attach the result of python script and pipeline logs to the email
         stage('Send Email Notification') {
             steps {
                 echo 'TODO: Add email sending logic here.'
-                // Use emailext once SMTP is configured
-                // See earlier response for full example
             }
         }
     }
 
-    post {
-        failure {
-            echo "Pipeline failed."
-            // Optionally send failure email here
-        }
-    }
+    
 }
