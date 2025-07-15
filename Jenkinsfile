@@ -10,7 +10,7 @@ pipeline {
     parameters {
         string(name: 'repo', defaultValue: '', description: 'GitHub repository URL')
         string(name: 'branch', defaultValue: '*/master', description: 'Branch name')
-        string(name: 'targetDir', defaultValue: 'C:\\Project', description: 'relativeTargetDir')
+        string(name: 'targetDir', defaultValue: ':C\\Project\\InterviewRepo', description: 'relativeTargetDir')
         string(name: 'auth', defaultValue: '', description: 'Credentials ID for GitHub')
     }
 
