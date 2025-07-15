@@ -34,7 +34,7 @@ pipeline {
                 ])
             }
         }
-
+    }
 
 // Run the python script in virtual environment
 // make sure to use requirements.txt to install dependencies
@@ -64,7 +64,7 @@ pipeline {
         steps {
             script {
                 def reportPath = "${params.targetDir}/sales_report.png"
-    
+
                 if (fileExists(reportPath)) {
                     emailext(
                         subject: "Jenkins Job '${env.JOB_NAME}' Succeeded",
@@ -84,5 +84,5 @@ pipeline {
                 }
             }
         }
-    }   
+    }
 }
