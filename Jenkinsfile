@@ -70,7 +70,7 @@ pipeline {
                         subject: "Jenkins Job '${env.JOB_NAME}' Succeeded",
                         body: """<p>The job <b>${env.JOB_NAME}</b> completed successfully.</p>
                                  <p>Python script output <code>sales_report.png</code> is attached.</p>""",
-                        to: "your.email@example.com", // Change this
+                        to: "azadeh.ghaffari@litens.com",
                         attachmentsPattern: reportPath,
                         mimeType: 'text/html'
                     )
@@ -78,7 +78,7 @@ pipeline {
                     emailext(
                         subject: "Jenkins Job '${env.JOB_NAME}' completed (no report found)",
                         body: "The job ran, but 'sales_report.png' was not found.",
-                        to: "your.email@example.com",
+                        to: "azadeh.ghaffari@litens.com",
                         mimeType: 'text/plain'
                     )
                 }
