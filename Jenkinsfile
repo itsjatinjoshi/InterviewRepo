@@ -11,6 +11,7 @@ pipeline {
         string(name: 'repo', defaultValue: '', description: 'GitHub repository URL')
         string(name: 'branch', defaultValue: '*/master', description: 'Branch name')
         string(name: 'targetDir', defaultValue: 'C:\\Project', description: 'relativeTargetDir')
+        string(name: 'auth', defaultValue: 'git config --global --add safe.directory C:/Project', description: 'Credentials ID for GitHub')
     }
 
     stages {
